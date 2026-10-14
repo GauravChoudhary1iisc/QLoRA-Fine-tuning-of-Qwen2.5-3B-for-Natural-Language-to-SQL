@@ -1,0 +1,9 @@
+datasets
+requests
+transformers
+accelerate
+torch
+peft
+bitsandbytes
+trl
+pyyaml

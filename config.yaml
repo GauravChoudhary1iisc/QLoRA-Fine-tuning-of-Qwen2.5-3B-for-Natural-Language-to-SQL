@@ -1,0 +1,50 @@
+# QLoRA Fine-tuning Configuration — v2
+# Qwen2.5-3B base model, rank 32, 5 epochs
+
+# ── Model ─────────────────────────────────────────────────────────────────────
+model_name: "Qwen/Qwen2.5-3B"
+
+# ── LoRA ──────────────────────────────────────────────────────────────────────
+lora_rank: 32
+lora_alpha: 64
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# ── Quantisation ──────────────────────────────────────────────────────────────
+load_in_4bit: true
+bnb_4bit_compute_dtype: "bfloat16"
+bnb_4bit_quant_type: "nf4"
+
+# ── Training ──────────────────────────────────────────────────────────────────
+num_epochs: 5
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+learning_rate: 0.0002
+lr_scheduler_type: "cosine"
+warmup_steps: 50
+max_seq_length: 512
+weight_decay: 0.01
+
+# ── Data ──────────────────────────────────────────────────────────────────────
+train_file: "data/processed/train_formatted.json"
+val_file:   "data/processed/val_formatted.json"
+
+# ── Output ────────────────────────────────────────────────────────────────────
+output_dir: "checkpoints"
+save_steps: 200
+eval_steps: 200
+logging_steps: 50
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+seed: 42
+bf16: true
+fp16: false
+gradient_checkpointing: true
+dataloader_num_workers: 0
